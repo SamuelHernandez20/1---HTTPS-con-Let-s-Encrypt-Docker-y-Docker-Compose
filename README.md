@@ -9,3 +9,13 @@ En esta primera práctica de ejemplo se busca desplegar mediante un archivo **.y
     │   ├── docker-compose.yml
 
 ```
+ ## 1. Archivo de variables:
+
+ Dentro de el archivo **.env** estás serán las únicas variables que hará falta en este caso tener:
+ 
+```
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=prestashop
+MYSQL_USER=ps_user
+MYSQL_PASSWORD=ps_password
+```
