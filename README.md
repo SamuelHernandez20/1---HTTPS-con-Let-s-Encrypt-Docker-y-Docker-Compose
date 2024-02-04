@@ -58,7 +58,7 @@ En la primera línea nos encontramos con el establecimiento de la **versión**, 
 ```
  version: '3.4'
 ```
-En este primer bloque el servicio que se define es el de **mysql**:
+`En este primer bloque el servicio que se define es el de **mysql**:`
 
 1. Descargo la imagen de mysql, al no especificar **tag** baja la **latest**
 2. Se define el comando "--default-authentication-plugin=mysql_native_password" para que **mysql** use es método especifico de **autenticación**:
@@ -86,7 +86,7 @@ services:
       - backend-network
     restart: always
 ```
-En este segundo bloque el servicio que se define es el de **phpmyadmin**:
+`En este segundo bloque el servicio que se define es el de **phpmyadmin**:`
 
 1. Procedo a descargar la imagen de phpmyadmin, al no especificar **tag** baja la **latest**
 2. Definición de puertos [máquina]:[contenedor_mysql] **8080** y **80**.
