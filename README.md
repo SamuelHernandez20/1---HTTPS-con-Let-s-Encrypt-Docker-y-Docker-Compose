@@ -41,7 +41,7 @@ sudo usermod -aG docker ubuntu
 ```
 newgrp docker
 ```
- ### 1.1 Archivo de variables:
+ ## 2 Archivo de variables:
 
  Dentro de el archivo **.env** estás serán las únicas variables que hará falta en este caso tener:
  
@@ -51,4 +51,4 @@ MYSQL_DATABASE=prestashop
 MYSQL_USER=ps_user
 MYSQL_PASSWORD=ps_password
 ```
- ### 1.2 Explicaci:
+ ## 3 Explicación del archivo docker-compose.yml:
