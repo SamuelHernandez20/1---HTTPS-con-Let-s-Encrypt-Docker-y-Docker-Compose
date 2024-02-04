@@ -155,11 +155,16 @@ services:
     networks:
       - frontend-network
 ```
+
+En esta parte de aquí se definen los volumenes de datos:
+
 ```
 volumes:
   mysql_data:
   prestashop_data:
 ```
+
+Y aqui las redes definidas:
 ```
 networks: 
   backend-network:
