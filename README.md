@@ -50,6 +50,8 @@ MYSQL_ROOT_PASSWORD=root
 MYSQL_DATABASE=prestashop
 MYSQL_USER=ps_user
 MYSQL_PASSWORD=ps_password
+
+DOMINIO=dockersamuel.ddns.net
 ```
  ## 3 Explicación del archivo docker-compose.yml:
 
@@ -62,7 +64,7 @@ En la primera línea nos encontramos con el establecimiento de la **versión**, 
 
 1. Descargo la imagen de mysql, al no especificar **tag** baja la **latest**
 2. Se define el comando "--default-authentication-plugin=mysql_native_password" para que **mysql** use es método especifico de **autenticación**:
-3. Definición de puertos [máquina]:[contenedor_mysql] **3306** y **3306**.
+3. Definición de puertos comentada para que no sea accesible desde fuera el **mysql**.
 4. Definición de las variables de la base de datos.
 5. volumen gestionado por docker.
 6. Definición de red personalizada, en este caso como **backend**.
@@ -73,8 +75,8 @@ services:
   mysql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
-    ports: 
-      - 3306:3306
+    #ports: 
+    #  - 3306:3306
     environment: 
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -153,7 +155,7 @@ services:
       - 443:443
     restart: always
     environment:
-      DOMAINS: 'dockersamuel.ddns.net -> http://prestashop:80'
+      DOMAINS: '${DOMINIO} -> http://prestashop:80'
       STAGE: 'production' # Don't use production until staging works
       # FORCE_RENEW: 'true'
     networks:
@@ -174,3 +176,6 @@ networks:
   backend-network:
   frontend-network:
 ```
+ ## 4 Pruebas de funcionamiento:
+
+ 
