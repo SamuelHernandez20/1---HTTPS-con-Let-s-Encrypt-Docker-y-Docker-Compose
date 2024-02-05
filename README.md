@@ -140,6 +140,10 @@ services:
 4. Dentro de la definción de las variables de entorno primeramente defino mi **nombre de dominio** redirigido a **http://prestashop:80**
 5. En **STAGE** sirve para indicar el entorno de implementación, el cual esta establecido en **production**.
 6. Definición de red personalizada, en este caso como **frontend**.
+
+- **local**: Crea un certificado autofirmado para hacer pruebas en local.
+- **staging**: Solicita un certificado de prueba a Let’s Encrypt para nuestro entorno de pruebas.
+- **production**: Solicita un certificado válido a Let’s Encrypt. Esta opción sólo la usaremos para poner nuestro sitio web en producción.
    
 ```
   https-portal:
