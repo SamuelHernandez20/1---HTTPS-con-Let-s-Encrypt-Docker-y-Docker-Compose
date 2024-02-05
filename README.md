@@ -177,5 +177,7 @@ networks:
   frontend-network:
 ```
  ## 4 Pruebas de funcionamiento:
+ 
+![](images/Funcionamiento.png)
 
  
