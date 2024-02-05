@@ -4,8 +4,8 @@ services:
   mysql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
-    ports: 
-      - 3306:3306
+    #ports: 
+    #  - 3306:3306 <-- se puede borrar para que no sea accesible desde fuera
     environment: 
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -44,13 +44,13 @@ services:
       - mysql
 
   https-portal:
-    image: steveltn/https-portal:1 # <-- al ser no verificada se le coloca el namespace
+    image: steveltn/https-portal:1 # <-- al ser no verificada se le coloca el namespace.
     ports:
       - 80:80
       - 443:443
     restart: always
     environment:
-      DOMAINS: 'dockersamuel.ddns.net -> http://prestashop:80'
+      DOMAINS: '${DOMINIO} -> http://prestashop:80' # <-- para una mejor práctica guardar en una variable el dominio.
       STAGE: 'production' # Don't use production until staging works
       # FORCE_RENEW: 'true'
     networks:
