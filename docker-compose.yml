@@ -1,65 +1,63 @@
-version: '3.4'
+version: '3'
 
 services:
   mysql:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    #ports: 
-    #  - 3306:3306 <-- se puede borrar para que no sea accesible desde fuera
-    environment: 
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    volumes: 
-      - mysql_data:/var/lib/mysql
-    networks: 
-      - backend-network
-    restart: always
-  
-  phpmyadmin:
-    image: phpmyadmin
+    image: mysql:8
+    command: --default-authentication-plugin=caching_sha2_password
     ports:
-      - 8080:80
-    environment: 
-      - PMA_ARBITRARY=1 # <-- El valor 1 se utiliza para permitir que phpMyAdmin se conecte a cualquier servidor MySQL sin necesidad de especificar explícitamente la dirección IP
-    networks: 
-      - backend-network
-      - frontend-network
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=bitnamiROOT
+      - MYSQL_DATABASE=bitnami_prestashop
+      - MYSQL_USER=bn_prestashop
+      - MYSQL_PASSWORD=bitnamiUSER
+    volumes:
+      - mysql_data:/var/lib/mysql
+    security_opt:
+      - seccomp:unconfined
     restart: always
-    depends_on: 
-      - mysql
+    networks:
+      - backend-net
 
   prestashop:
-    image: prestashop/prestashop
-    environment: 
-      - DB_SERVER=mysql
-    volumes:
-      - prestashop_data:/var/www/html
-    networks: 
-      - backend-network
-      - frontend-network
-    restart: always
-    depends_on: 
-      - mysql
-
-  https-portal:
-    image: steveltn/https-portal:1 # <-- al ser no verificada se le coloca el namespace.
     ports:
-      - 80:80
-      - 443:443
-    restart: always
+      - 80:8080
+    image: bitnami/prestashop:1.7
     environment:
-      DOMAINS: '${DOMINIO} -> http://prestashop:80' # <-- para una mejor práctica guardar en una variable el dominio.
-      STAGE: 'production' # Don't use production until staging works
-      # FORCE_RENEW: 'true'
+      - PRESTASHOP_DATABASE_HOST=mysql
+      - PRESTASHOP_DATABASE_USER=bn_prestashop
+      - PRESTASHOP_DATABASE_NAME=bitnami_prestashop
+      - PRESTASHOP_DATABASE_PASSWORD=bitnamiUSER
+      - ALLOW_EMPTY_PASSWORD=no
+      - PRESTASHOP_DATABASE_PORT_NUMBER=3306
+      - PRESTASHOP_FIRST_NAME=samuel
+      - PRESTASHOP_LAST_NAME=hernandez
+      - PRESTASHOP_PASSWORD=password123 
+      - PRESTASHOP_EMAIL=samuel@example.com
+      - PRESTASHOP_HOST=54.152.86.90
+      - PRESTASHOP_COUNTRY=es
+      - PRESTASHOP_LANGUAGE=es
+    volumes:
+      - prestashop_data:/bitnami/prestashop
+    depends_on:
+      - mysql
+    restart: always
     networks:
-      - frontend-network
-
+      - frontend-net
+      - backend-net
+  phpmyadmin:
+    image: phpmyadmin:5
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    networks:
+      - frontend-net
+      - backend-net
 volumes:
   mysql_data:
   prestashop_data:
 
-networks: 
-  backend-network:
-  frontend-network:
+networks:
+ frontend-net:
+ backend-net:
