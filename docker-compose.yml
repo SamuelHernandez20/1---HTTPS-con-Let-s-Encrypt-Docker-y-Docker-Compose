@@ -7,10 +7,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=bitnamiROOT
-      - MYSQL_DATABASE=bitnami_prestashop
-      - MYSQL_USER=bn_prestashop
-      - MYSQL_PASSWORD=bitnamiUSER
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     security_opt:
@@ -20,23 +20,23 @@ services:
       - backend-net
 
   prestashop:
-    ports:
-      - 80:8080
     image: bitnami/prestashop:1.7
+    ports:
+      - 8080:80
     environment:
-      - PRESTASHOP_DATABASE_HOST=mysql
-      - PRESTASHOP_DATABASE_USER=bn_prestashop
-      - PRESTASHOP_DATABASE_NAME=bitnami_prestashop
-      - PRESTASHOP_DATABASE_PASSWORD=bitnamiUSER
+      - PRESTASHOP_DATABASE_HOST=${PRESTASHOP_DATABASE_HOST}
+      - PRESTASHOP_DATABASE_USER=${PRESTASHOP_DATABASE_USER}
+      - PRESTASHOP_DATABASE_NAME=${PRESTASHOP_DATABASE_NAME}
+      - PRESTASHOP_DATABASE_PASSWORD=${PRESTASHOP_DATABASE_PASSWORD}
       - ALLOW_EMPTY_PASSWORD=no
-      - PRESTASHOP_DATABASE_PORT_NUMBER=3306
-      - PRESTASHOP_FIRST_NAME=samuel
-      - PRESTASHOP_LAST_NAME=hernandez
-      - PRESTASHOP_PASSWORD=password123 
-      - PRESTASHOP_EMAIL=samuel@example.com
-      - PRESTASHOP_HOST=54.152.86.90
-      - PRESTASHOP_COUNTRY=es
-      - PRESTASHOP_LANGUAGE=es
+      - PRESTASHOP_FIRST_NAME=${PRESTASHOP_FIRST_NAME}
+      - PRESTASHOP_DATABASE_PORT_NUMBER=${PRESTASHOP_DATABASE_PORT_NUMBER}
+      - PRESTASHOP_LAST_NAME=${PRESTASHOP_LAST_NAME}
+      - PRESTASHOP_PASSWORD=${PRESTASHOP_PASSWORD}
+      - PRESTASHOP_EMAIL=${PRESTASHOP_EMAIL}
+      - PRESTASHOP_HOST=${PRESTASHOP_HOST}
+      - PRESTASHOP_COUNTRY=${PRESTASHOP_COUNTRY}
+      - PRESTASHOP_LANGUAGE=${PRESTASHOP_LANGUAGE}
     volumes:
       - prestashop_data:/bitnami/prestashop
     depends_on:
@@ -48,12 +48,13 @@ services:
   phpmyadmin:
     image: phpmyadmin:5
     ports:
-      - 8080:80
+      - 8081:80
     depends_on:
       - mysql
     networks:
       - frontend-net
       - backend-net
+
 volumes:
   mysql_data:
   prestashop_data:
