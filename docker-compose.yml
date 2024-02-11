@@ -1,64 +1,78 @@
 version: '3'
 
 services:
+
   mysql:
-    image: mysql:8
-    command: --default-authentication-plugin=caching_sha2_password
-    ports:
-      - 3306:3306
+    image: mysql:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+    restart: always
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - backend-net
     security_opt:
       - seccomp:unconfined
-    restart: always
-    networks:
-      - backend-net
 
   prestashop:
-    image: bitnami/prestashop:1.7
-    ports:
-      - 8080:80
+    image: bitnami/prestashop:1.7 
     environment:
+      - PRESTASHOP_HOST=${PRESTASHOP_HOST}
+      - PRESTASHOP_ENABLE_HTTPS=yes
       - PRESTASHOP_DATABASE_HOST=${PRESTASHOP_DATABASE_HOST}
+      - PRESTASHOP_DATABASE_PASSWORD=${PRESTASHOP_DATABASE_PASSWORD}
       - PRESTASHOP_DATABASE_USER=${PRESTASHOP_DATABASE_USER}
       - PRESTASHOP_DATABASE_NAME=${PRESTASHOP_DATABASE_NAME}
-      - PRESTASHOP_DATABASE_PASSWORD=${PRESTASHOP_DATABASE_PASSWORD}
-      - ALLOW_EMPTY_PASSWORD=no
       - PRESTASHOP_FIRST_NAME=${PRESTASHOP_FIRST_NAME}
-      - PRESTASHOP_DATABASE_PORT_NUMBER=${PRESTASHOP_DATABASE_PORT_NUMBER}
-      - PRESTASHOP_LAST_NAME=${PRESTASHOP_LAST_NAME}
+      - PRESTASHOP_LAST_NAME=${PRESTASHOP_FIRST_NAME}
       - PRESTASHOP_PASSWORD=${PRESTASHOP_PASSWORD}
       - PRESTASHOP_EMAIL=${PRESTASHOP_EMAIL}
-      - PRESTASHOP_HOST=${PRESTASHOP_HOST}
-      - PRESTASHOP_COUNTRY=${PRESTASHOP_COUNTRY}
-      - PRESTASHOP_LANGUAGE=${PRESTASHOP_LANGUAGE}
+
     volumes:
       - prestashop_data:/bitnami/prestashop
-    depends_on:
-      - mysql
     restart: always
     networks:
-      - frontend-net
       - backend-net
+      - frontend-net
+
+    depends_on:
+      - mysql
+  
   phpmyadmin:
     image: phpmyadmin:5
     ports:
-      - 8081:80
+      - 8080:80
+    environment:
+      - PMA_HOST=mysql
     depends_on:
       - mysql
     networks:
       - frontend-net
       - backend-net
 
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+
+      DOMAINS: '${PRESTASHOP_HOST} -> http://prestashop:8080 #production'
+    volumes:
+      - ssl_certs_data:/var/lib/https-portal
+    depends_on:
+      - prestashop
+    restart: always
+    networks:
+      - frontend-net
 volumes:
   mysql_data:
   prestashop_data:
-
+  ssl_certs_data:
 networks:
- frontend-net:
- backend-net:
+  frontend-net:
+  backend-net:
