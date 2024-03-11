@@ -158,28 +158,32 @@ services:
 
 1. En esta primera línea defino el **namespace** y la imagen que voy a bajar junto a la definición de su **tag**, en este caso **1**:
 2. Definición de puertos [máquina]:[contenedor_mysql] **80** y **80**; **443** y **443**.
-3. Reinicio del contenedor, incluso si se detiene por cualquier motivo de error, para garantizar su disponibilidad.
-4. Dentro de la definción de las variables de entorno primeramente defino mi **nombre de dominio** redirigido a **http://prestashop:80**
-5. En **STAGE** sirve para indicar el entorno de implementación, el cual esta establecido en **production**.
-6. Definición de red personalizada, en este caso como **frontend**.
+4. Dentro de la definción de las variables de entorno primeramente defino mi **nombre de dominio** redirigido a **http://prestashop:8080**.
+5. El volumen será **ssl_certs_data**.
+6. Aquí le indico que depende del servicio de **prestashop**.
+7. Reinicio del contenedor, incluso si se detiene por cualquier motivo de error, para garantizar su disponibilidad.
+8. Definición de red personalizada, en este caso como **frontend-net**.
 
 - **local**: Crea un certificado autofirmado para hacer pruebas en local.
 - **staging**: Solicita un certificado de prueba a Let’s Encrypt para nuestro entorno de pruebas.
 - **production**: Solicita un certificado válido a Let’s Encrypt. Esta opción sólo la usaremos para poner nuestro sitio web en producción.
    
 ```
+
   https-portal:
-    image: steveltn/https-portal:1 # <-- al ser no verificada se le coloca el namespace
+    image: steveltn/https-portal:1
     ports:
       - 80:80
       - 443:443
-    restart: always
     environment:
-      DOMAINS: '${DOMINIO} -> http://prestashop:80'
-      STAGE: 'production' # Don't use production until staging works
-      # FORCE_RENEW: 'true'
+      DOMAINS: '${PRESTASHOP_HOST} -> http://prestashop:8080 #production'
+    volumes:
+      - ssl_certs_data:/var/lib/https-portal
+    depends_on:
+      - prestashop
+    restart: always
     networks:
-      - frontend-network
+      - frontend-net
 ```
 
 En esta parte de aquí se definen los volumenes de datos:
