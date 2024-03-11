@@ -103,28 +103,36 @@ services:
 
 `En este segundo bloque el servicio que se define es el de prestashop:`
 
-1. Procedo a descargar la imagen de prestashop, en este caso una imagen de nombre **prestashop/prestashop**, en esta caso traerá la **ultima versión**.
-2. dentro de las variables se define el **DB_SERVER** para indicar mediante el **nombre del servicio** a que base de datos hacer referencia en cuanto a la **dirección** del servidor de la **base de datos**.
-3. Se realiza un volumen gestionado por docker para el **directorio de datos** del **prestashop**.
-4. Definición de red personalizada, en este caso como **backend** y **frontend**.
-5. Reinicio del contenedor, incluso si se detiene por cualquier motivo de error, para garantizar su disponibilidad.
+1. Procedo a descargar la imagen de prestashop, en este caso una imagen de nombre **bitnami/prestashop:1.7**.
+2. en la parte de las variables defino las necesarias para definir la base de datos, host de prestashop
 6. Se establece en el **depends_on** el nombre del servicio **mysql** para que no se ejecute este hasta que el otro este en estado de **ejecución**
 
 ```
-  prestashop:
-    image: prestashop/prestashop
-    environment: 
-      - DB_SERVER=mysql
+ prestashop:
+    image: bitnami/prestashop:1.7 
+    environment:
+      - PRESTASHOP_HOST=${PRESTASHOP_HOST}
+      - PRESTASHOP_ENABLE_HTTPS=yes
+      - PRESTASHOP_DATABASE_HOST=${PRESTASHOP_DATABASE_HOST}
+      - PRESTASHOP_DATABASE_PASSWORD=${PRESTASHOP_DATABASE_PASSWORD}
+      - PRESTASHOP_DATABASE_USER=${PRESTASHOP_DATABASE_USER}
+      - PRESTASHOP_DATABASE_NAME=${PRESTASHOP_DATABASE_NAME}
+      - PRESTASHOP_FIRST_NAME=${PRESTASHOP_FIRST_NAME}
+      - PRESTASHOP_LAST_NAME=${PRESTASHOP_FIRST_NAME}
+      - PRESTASHOP_PASSWORD=${PRESTASHOP_PASSWORD}
+      - PRESTASHOP_EMAIL=${PRESTASHOP_EMAIL}
+
     volumes:
-      - prestashop_data:/var/www/html
-    networks: 
-      - backend-network
-      - frontend-network
+      - prestashop_data:/bitnami/prestashop
     restart: always
-    depends_on: 
+    networks:
+      - backend-net
+      - frontend-net
+
+    depends_on:
       - mysql
 ```
-`En este cuarto bloque el servicio que se define es el de https-portal:`
+`En este tercer bloque el servicio que se define es el de https-portal:`
 
 1. En esta primera línea defino el **namespace** y la imagen que voy a bajar junto a la definición de su **tag**, en este caso **1**:
 2. Definición de puertos [máquina]:[contenedor_mysql] **80** y **80**; **443** y **443**.
