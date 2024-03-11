@@ -104,8 +104,8 @@ services:
 `En este segundo bloque el servicio que se define es el de prestashop:`
 
 1. Procedo a descargar la imagen de prestashop, en este caso una imagen de nombre **bitnami/prestashop:1.7**.
-2. en la parte de las variables defino las necesarias para definir la base de datos, host de prestashop
-6. Se establece en el **depends_on** el nombre del servicio **mysql** para que no se ejecute este hasta que el otro este en estado de **ejecución**
+2. En la parte de las variables defino las necesarias para definir la **base de datos**, **host** de prestashop que será este caso el dominio desde donde accederemos, **contraseña** del prestashop...
+3. También en este bloque utilizo un **volumen** gestionado por **Docker**.
 
 ```
  prestashop:
