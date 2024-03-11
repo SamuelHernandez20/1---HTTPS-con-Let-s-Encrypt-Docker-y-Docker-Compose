@@ -46,12 +46,25 @@ newgrp docker
  Dentro de el archivo **.env** estás serán las únicas variables que hará falta en este caso tener:
  
 ```
-MYSQL_ROOT_PASSWORD=root
-MYSQL_DATABASE=prestashop
-MYSQL_USER=ps_user
-MYSQL_PASSWORD=ps_password
+# Variables de la base de datos:
 
-DOMINIO=dockersamuel.ddns.net
+MYSQL_ROOT_PASSWORD=bitnamiROOT
+MYSQL_DATABASE=bitnami_prestashop
+MYSQL_USER=bn_prestashop
+MYSQL_PASSWORD=bitnamiUSER
+
+# Variables del prestashop:
+
+PRESTASHOP_HOST=prestashopsamuel.ddns.net
+PRESTASHOP_ENABLE_HTTPS=yes
+PRESTASHOP_DATABASE_HOST=mysql
+PRESTASHOP_DATABASE_PASSWORD=bitnamiUSER
+PRESTASHOP_DATABASE_USER=bn_prestashop
+PRESTASHOP_DATABASE_NAME=bitnami_prestashop
+PRESTASHOP_FIRST_NAME=samuel
+PRESTASHOP_PASSWORD=password123
+PRESTASHOP_EMAIL=samuel@tmmwj.net
+
 ```
  ## 3 Explicación del archivo docker-compose.yml:
 
