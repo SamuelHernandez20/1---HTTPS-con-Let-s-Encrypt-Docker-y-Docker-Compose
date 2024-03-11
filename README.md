@@ -100,30 +100,8 @@ services:
     security_opt:
       - seccomp:unconfined
 ```
-`En este segundo bloque el servicio que se define es el de phpmyadmin:`
 
-1. Procedo a descargar la imagen de phpmyadmin, al no especificar **tag** baja la **latest**
-2. Definición de puertos [máquina]:[contenedor_mysql] **8080** y **80**.
-3. variable de entorno **PMA_ARBITRARY=1**: El valor **1** se utiliza para **permitir** que **phpMyAdmin** se conecte a cualquier servidor **MySQL** sin necesidad de especificar explícitamente la **dirección IP**.
-4. Definición de red personalizada, en este caso como **backend** y **frontend**, para que el usuario frontal pueda acceder a la base de datos.
-5. Reinicio del contenedor, incluso si se detiene por cualquier motivo de error, para garantizar su disponibilidad.
-6. Se establece en el **depends_on** el nombre del servicio **mysql** para que no se ejecute este hasta que el otro este en estado de **ejecución**
-
-```
-  phpmyadmin:
-    image: phpmyadmin
-    ports:
-      - 8080:80
-    environment: 
-      - PMA_ARBITRARY=1
-    networks: 
-      - backend-network
-      - frontend-network
-    restart: always
-    depends_on: 
-      - mysql
-```
-`En este tercer bloque el servicio que se define es el de prestashop:`
+`En este segundo bloque el servicio que se define es el de prestashop:`
 
 1. Procedo a descargar la imagen de prestashop, en este caso una imagen de nombre **prestashop/prestashop**, en esta caso traerá la **ultima versión**.
 2. dentro de las variables se define el **DB_SERVER** para indicar mediante el **nombre del servicio** a que base de datos hacer referencia en cuanto a la **dirección** del servidor de la **base de datos**.
