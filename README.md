@@ -132,7 +132,29 @@ services:
     depends_on:
       - mysql
 ```
-`En este tercer bloque el servicio que se define es el de https-portal:`
+`En este tercer bloque el servicio que se define es el del phpmyadmin:`
+
+1. En esta primera línea bajo la imagen de **phpmyadmin** con el tag **5**:
+2. Definición de puertos [máquina]:[contenedor_mysql] **8080**; **80**.
+3. La parte de las variables defino el **PMA_HOST**, que era indicar el nombre del contenedor con el que quiero conectarme desde phpmyadmin, sin tener que indicarlo manualmente desde la interfaz gráfica.
+4. Le indico que depende del servicio de **mysql** definido arriba.
+5. Definición de red personalizada, en este caso como **frontend-net** y **backend-net**.
+
+```
+ phpmyadmin:
+    image: phpmyadmin:5
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysql
+    depends_on:
+      - mysql
+    networks:
+      - frontend-net
+      - backend-net
+```
+
+`En este cuarto bloque el servicio que se define es el de https-portal:`
 
 1. En esta primera línea defino el **namespace** y la imagen que voy a bajar junto a la definición de su **tag**, en este caso **1**:
 2. Definición de puertos [máquina]:[contenedor_mysql] **80** y **80**; **443** y **443**.
