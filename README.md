@@ -178,6 +178,6 @@ networks:
 ```
  ## 4 Pruebas de funcionamiento:
  
-![](acceso a prestashop por el dominio.png)
+![](/acceso a prestashop por el dominio.png)
 
  
