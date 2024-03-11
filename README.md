@@ -79,7 +79,7 @@ En la primera línea nos encontramos con el establecimiento de la **versión**, 
 2. Los puertos no se definen, para que no sea accesible desde fuera el **mysql**.
 4. Definición de las **variables** de la **base de datos**.
 5. Volumen gestionado por **docker**.
-6. Definición de **red personalizada**, en este caso como **backend**.
+6. Definición de **red personalizada**, en este caso como **backend-net**.
 7. **Seccomp** es un mecanismo para restringir las acciones disponibles dentro del contenedor 
    
 ```
