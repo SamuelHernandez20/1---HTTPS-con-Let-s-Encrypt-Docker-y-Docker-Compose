@@ -198,7 +198,8 @@ volumes:
 Y aqui las redes definidas:
 ```
 networks: 
- 
+ frontend-net:
+  backend-net:
 ```
  ## 4 Pruebas de funcionamiento:
  
