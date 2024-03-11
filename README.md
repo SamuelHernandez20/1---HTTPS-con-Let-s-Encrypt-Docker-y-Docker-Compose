@@ -197,8 +197,9 @@ volumes:
 Y aqui las redes definidas:
 ```
 networks: 
-  backend-network:
-  frontend-network:
+  mysql_data:
+  prestashop_data:
+  ssl_certs_data:
 ```
  ## 4 Pruebas de funcionamiento:
  
