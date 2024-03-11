@@ -192,14 +192,13 @@ En esta parte de aquí se definen los volumenes de datos:
 volumes:
   mysql_data:
   prestashop_data:
+  ssl_certs_data:
 ```
 
 Y aqui las redes definidas:
 ```
 networks: 
-  mysql_data:
-  prestashop_data:
-  ssl_certs_data:
+ 
 ```
  ## 4 Pruebas de funcionamiento:
  
